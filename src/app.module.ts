@@ -14,6 +14,7 @@ import { HomeworkModule } from './homework/homework.module';
 import { FinanceModule } from './finance/finance.module';
 import { ExamsModule } from './exams/exams.module';
 import { CurriculumModule } from './curriculum/curriculum.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { CurriculumModule } from './curriculum/curriculum.module';
     FinanceModule,
     ExamsModule,
     CurriculumModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

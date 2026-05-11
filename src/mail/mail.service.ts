@@ -1,9 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MailService {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  async sendContactFormNotification(details: { name: string; email: string; subject: string; message: string }) {
+    const adminEmail = this.configService.get<string>('ADMIN_EMAIL') || 'prakashdutttripathi@gmail.com';
+
+    // Send to Admin
+    await this.mailerService.sendMail({
+      to: adminEmail,
+      subject: `New Contact Form Submission: ${details.subject}`,
+      html: `
+        <h3>New Message from Contact Form</h3>
+        <p><b>Name:</b> ${details.name}</p>
+        <p><b>Email:</b> ${details.email}</p>
+        <p><b>Subject:</b> ${details.subject}</p>
+        <p><b>Message:</b></p>
+        <p>${details.message}</p>
+      `,
+    });
+
+    // Send Confirmation to User
+    await this.mailerService.sendMail({
+      to: details.email,
+      subject: 'We received your message - UDCS',
+      html: `
+        <h3>Hello ${details.name},</h3>
+        <p>Thank you for reaching out to Usha Devi Convent School. We have received your message regarding "<b>${details.subject}</b>".</p>
+        <p>Our team will get back to you within 24 hours.</p>
+        <br>
+        <p>Regards,<br>UDCS Administration</p>
+      `,
+    });
+  }
 
   async sendEnrollmentApproval(email: string, name: string) {
     await this.mailerService.sendMail({
