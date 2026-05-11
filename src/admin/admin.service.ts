@@ -81,7 +81,7 @@ export class AdminService {
       const savedStudent = await this.studentRepository.save(student);
       
       // Send email
-      await this.mailService.sendCredentials(studentData.email, studentData.name, tempPassword, 'Student');
+      void this.mailService.sendCredentials(studentData.email, studentData.name, tempPassword, 'Student');
       
       return savedStudent;
     } catch (error) {
@@ -109,6 +109,7 @@ export class AdminService {
     if (studentData.admissionDate) student.admissionDate = studentData.admissionDate;
     if (studentData.contactNo) student.contactNo = studentData.contactNo;
     if (studentData.address) student.address = studentData.address;
+    if (studentData.status) student.status = studentData.status;
 
     // Handle class update if provided
     if (studentData.className) {
@@ -120,6 +121,24 @@ export class AdminService {
     }
 
     return this.studentRepository.save(student);
+  }
+
+  async approveStudent(id: string) {
+    const student = await this.studentRepository.findOne({ 
+      where: { id },
+      relations: ['user']
+    });
+    if (!student) throw new NotFoundException('Student not found');
+    
+    student.status = 'active';
+    const updated = await this.studentRepository.save(student);
+
+    // Notify user about approval
+    if (updated.user?.email) {
+      void this.mailService.sendEnrollmentApproval(updated.user.email, updated.fullName);
+    }
+
+    return updated;
   }
 
   async registerTeacher(teacherData: any) {
@@ -147,7 +166,7 @@ export class AdminService {
     const savedTeacher = await this.teacherRepository.save(teacher);
     
     // Send email
-    await this.mailService.sendCredentials(teacherData.email, teacherData.name, tempPassword, 'Teacher');
+    void this.mailService.sendCredentials(teacherData.email, teacherData.name, tempPassword, 'Teacher');
     
     return savedTeacher;
   }
@@ -167,12 +186,18 @@ export class AdminService {
       relations: ['schoolClass', 'user'],
       order: { createdAt: 'DESC' }
     })).map(s => ({
-      ...s,
+      id: s.id,
       name: s.fullName,
-      email: s.user?.email, 
+      fullName: s.fullName,
+      studentName: s.fullName,
+      email: s.user?.email || 'N/A', 
       className: s.schoolClass?.name || 'Unassigned',
-      attendance: 92, // Placeholder logic - could be calculated from attendance records
-      feeStatus: s.status === 'active' ? 'Paid' : 'Pending' // Simple logic for now
+      section: s.section,
+      status: s.status,
+      admissionDate: s.admissionDate || new Date().toISOString().split('T')[0],
+      rollNo: s.rollNumber,
+      attendance: 92, 
+      feeStatus: s.status === 'active' ? 'Paid' : 'Pending'
     }));
     
     const teachers = (await this.teacherRepository.find({ relations: ['user'] })).map(t => ({

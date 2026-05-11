@@ -13,12 +13,42 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const users_service_1 = require("../users/users.service");
+const students_service_1 = require("../students/students.service");
+const mail_service_1 = require("../mail/mail.service");
+const user_entity_1 = require("../users/entities/user.entity");
 let AuthService = class AuthService {
     usersService;
+    studentsService;
     jwtService;
-    constructor(usersService, jwtService) {
+    mailService;
+    constructor(usersService, studentsService, jwtService, mailService) {
         this.usersService = usersService;
+        this.studentsService = studentsService;
         this.jwtService = jwtService;
+        this.mailService = mailService;
+    }
+    async signup(signupDto) {
+        const existingUser = await this.usersService.findOneByEmail(signupDto.email);
+        if (existingUser) {
+            throw new common_1.ConflictException('Email already registered');
+        }
+        const user = await this.usersService.create({
+            email: signupDto.email,
+            password: signupDto.password,
+            role: user_entity_1.UserRole.STUDENT,
+            isActive: true,
+        });
+        await this.studentsService.create({
+            fullName: signupDto.fullName,
+            user: user,
+            status: 'pending',
+            section: 'A',
+        });
+        void this.mailService.sendSignupNotification(signupDto.email, signupDto.fullName);
+        return {
+            success: true,
+            message: 'Registration successful. Please wait for admin approval.',
+        };
     }
     async login(email, pass) {
         const user = await this.usersService.findOneByEmail(email);
@@ -43,6 +73,8 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService,
-        jwt_1.JwtService])
+        students_service_1.StudentsService,
+        jwt_1.JwtService,
+        mail_service_1.MailService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

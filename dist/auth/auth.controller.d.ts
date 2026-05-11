@@ -10,4 +10,8 @@ export declare class AuthController {
         role: import("../users/entities/user.entity").UserRole;
         message: string;
     }>;
+    signup(signupDto: any): Promise<{
+        success: boolean;
+        message: string;
+    }>;
 }

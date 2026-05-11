@@ -35,4 +35,9 @@ export class AdminController {
   updateStudent(@Param('id') id: string, @Body() studentData: any) {
     return this.adminService.updateStudent(id, studentData);
   }
+
+  @Post('students/approve/:id')
+  approveStudent(@Param('id') id: string) {
+    return this.adminService.approveStudent(id);
+  }
 }

@@ -42,6 +42,9 @@ let AdminController = class AdminController {
     updateStudent(id, studentData) {
         return this.adminService.updateStudent(id, studentData);
     }
+    approveStudent(id) {
+        return this.adminService.approveStudent(id);
+    }
 };
 exports.AdminController = AdminController;
 __decorate([
@@ -72,6 +75,13 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "updateStudent", null);
+__decorate([
+    (0, common_1.Post)('students/approve/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "approveStudent", null);
 exports.AdminController = AdminController = __decorate([
     (0, common_1.Controller)('admin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),

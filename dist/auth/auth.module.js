@@ -14,6 +14,8 @@ const config_1 = require("@nestjs/config");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const users_module_1 = require("../users/users.module");
+const students_module_1 = require("../students/students.module");
+const mail_module_1 = require("../mail/mail.module");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
 let AuthModule = class AuthModule {
 };
@@ -22,6 +24,8 @@ exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
             users_module_1.UsersModule,
+            students_module_1.StudentsModule,
+            mail_module_1.MailModule,
             passport_1.PassportModule,
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],

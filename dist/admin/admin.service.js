@@ -82,7 +82,7 @@ let AdminService = class AdminService {
                 schoolClass: schoolClass,
             });
             const savedStudent = await this.studentRepository.save(student);
-            await this.mailService.sendCredentials(studentData.email, studentData.name, tempPassword, 'Student');
+            void this.mailService.sendCredentials(studentData.email, studentData.name, tempPassword, 'Student');
             return savedStudent;
         }
         catch (error) {
@@ -120,6 +120,8 @@ let AdminService = class AdminService {
             student.contactNo = studentData.contactNo;
         if (studentData.address)
             student.address = studentData.address;
+        if (studentData.status)
+            student.status = studentData.status;
         if (studentData.className) {
             let schoolClass = await this.classRepository.findOne({ where: { name: studentData.className } });
             if (!schoolClass) {
@@ -128,6 +130,20 @@ let AdminService = class AdminService {
             student.schoolClass = schoolClass;
         }
         return this.studentRepository.save(student);
+    }
+    async approveStudent(id) {
+        const student = await this.studentRepository.findOne({
+            where: { id },
+            relations: ['user']
+        });
+        if (!student)
+            throw new common_1.NotFoundException('Student not found');
+        student.status = 'active';
+        const updated = await this.studentRepository.save(student);
+        if (updated.user?.email) {
+            void this.mailService.sendEnrollmentApproval(updated.user.email, updated.fullName);
+        }
+        return updated;
     }
     async registerTeacher(teacherData) {
         const tempPassword = Math.random().toString(36).slice(-8);
@@ -148,7 +164,7 @@ let AdminService = class AdminService {
             user: user,
         });
         const savedTeacher = await this.teacherRepository.save(teacher);
-        await this.mailService.sendCredentials(teacherData.email, teacherData.name, tempPassword, 'Teacher');
+        void this.mailService.sendCredentials(teacherData.email, teacherData.name, tempPassword, 'Teacher');
         return savedTeacher;
     }
     async getDashboardStats() {
@@ -162,10 +178,16 @@ let AdminService = class AdminService {
             relations: ['schoolClass', 'user'],
             order: { createdAt: 'DESC' }
         })).map(s => ({
-            ...s,
+            id: s.id,
             name: s.fullName,
-            email: s.user?.email,
+            fullName: s.fullName,
+            studentName: s.fullName,
+            email: s.user?.email || 'N/A',
             className: s.schoolClass?.name || 'Unassigned',
+            section: s.section,
+            status: s.status,
+            admissionDate: s.admissionDate || new Date().toISOString().split('T')[0],
+            rollNo: s.rollNumber,
             attendance: 92,
             feeStatus: s.status === 'active' ? 'Paid' : 'Pending'
         }));

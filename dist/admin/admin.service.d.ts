@@ -16,6 +16,7 @@ export declare class AdminService {
     constructor(studentRepository: Repository<Student>, teacherRepository: Repository<Teacher>, feePaymentRepository: Repository<FeePayment>, classRepository: Repository<SchoolClass>, usersService: UsersService, mailService: MailService);
     registerStudent(studentData: any): Promise<Student>;
     updateStudent(id: string, studentData: any): Promise<Student>;
+    approveStudent(id: string): Promise<Student>;
     registerTeacher(teacherData: any): Promise<Teacher>;
     getDashboardStats(): Promise<{
         totalStudents: number;
@@ -23,28 +24,18 @@ export declare class AdminService {
         totalFeesCollected: number;
         pendingFees: number;
         students: {
+            id: string;
             name: string;
+            fullName: string;
+            studentName: string;
             email: string;
             className: string;
+            section: string;
+            status: "active" | "pending" | "rejected";
+            admissionDate: string;
+            rollNo: string;
             attendance: number;
             feeStatus: string;
-            id: string;
-            fullName: string;
-            schoolClass: SchoolClass;
-            section: string;
-            rollNumber: string;
-            dob: string;
-            gender: string;
-            fatherName: string;
-            contactNo: string;
-            motherName: string;
-            aadharId: string;
-            bloodGroup: string;
-            admissionDate: string;
-            address: string;
-            status: "active" | "pending" | "rejected";
-            user: User;
-            createdAt: Date;
         }[];
         teachers: {
             name: string;

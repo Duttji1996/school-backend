@@ -12,39 +12,29 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthController = void 0;
+exports.ContactController = void 0;
 const common_1 = require("@nestjs/common");
-const auth_service_1 = require("./auth.service");
-let AuthController = class AuthController {
-    authService;
-    constructor(authService) {
-        this.authService = authService;
+const contact_service_1 = require("./contact.service");
+const create_contact_dto_1 = require("./dto/create-contact.dto");
+let ContactController = class ContactController {
+    contactService;
+    constructor(contactService) {
+        this.contactService = contactService;
     }
-    async login(loginDto) {
-        return this.authService.login(loginDto.email, loginDto.password);
-    }
-    async signup(signupDto) {
-        return this.authService.signup(signupDto);
+    async submit(createContactDto) {
+        return this.contactService.processContactForm(createContactDto);
     }
 };
-exports.AuthController = AuthController;
+exports.ContactController = ContactController;
 __decorate([
-    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    (0, common_1.Post)('login'),
+    (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [create_contact_dto_1.CreateContactDto]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "login", null);
-__decorate([
-    (0, common_1.Post)('signup'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "signup", null);
-exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
-], AuthController);
-//# sourceMappingURL=auth.controller.js.map
+], ContactController.prototype, "submit", null);
+exports.ContactController = ContactController = __decorate([
+    (0, common_1.Controller)('contact'),
+    __metadata("design:paramtypes", [contact_service_1.ContactService])
+], ContactController);
+//# sourceMappingURL=contact.controller.js.map

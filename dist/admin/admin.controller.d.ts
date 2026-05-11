@@ -8,28 +8,18 @@ export declare class AdminController {
         totalFeesCollected: number;
         pendingFees: number;
         students: {
+            id: string;
             name: string;
+            fullName: string;
+            studentName: string;
             email: string;
             className: string;
+            section: string;
+            status: "active" | "pending" | "rejected";
+            admissionDate: string;
+            rollNo: string;
             attendance: number;
             feeStatus: string;
-            id: string;
-            fullName: string;
-            schoolClass: import("../curriculum/entities/school-class.entity").SchoolClass;
-            section: string;
-            rollNumber: string;
-            dob: string;
-            gender: string;
-            fatherName: string;
-            contactNo: string;
-            motherName: string;
-            aadharId: string;
-            bloodGroup: string;
-            admissionDate: string;
-            address: string;
-            status: "active" | "pending" | "rejected";
-            user: import("../users/entities/user.entity").User;
-            createdAt: Date;
         }[];
         teachers: {
             name: string;
@@ -52,4 +42,5 @@ export declare class AdminController {
     registerTeacher(teacherData: any): Promise<import("../teachers/entities/teacher.entity").Teacher>;
     registerStudent(studentData: any): Promise<import("../students/entities/student.entity").Student>;
     updateStudent(id: string, studentData: any): Promise<import("../students/entities/student.entity").Student>;
+    approveStudent(id: string): Promise<import("../students/entities/student.entity").Student>;
 }
