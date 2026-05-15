@@ -26,6 +26,21 @@ let AuthController = class AuthController {
     async signup(signupDto) {
         return this.authService.signup(signupDto);
     }
+    async forgotPassword(email) {
+        return this.authService.forgotPassword(email);
+    }
+    async resendOTP(email) {
+        return this.authService.resendOTP(email);
+    }
+    async verifyOTP(email, otp) {
+        return this.authService.verifyOTP(email, otp);
+    }
+    async resetPassword(email, otp, newPass) {
+        return this.authService.resetPassword(email, otp, newPass);
+    }
+    async changePassword(userId, oldPass, newPass) {
+        return this.authService.changePassword(userId, oldPass, newPass);
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -43,6 +58,46 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signup", null);
+__decorate([
+    (0, common_1.Post)('forgot-password'),
+    __param(0, (0, common_1.Body)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "forgotPassword", null);
+__decorate([
+    (0, common_1.Post)('resend-otp'),
+    __param(0, (0, common_1.Body)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "resendOTP", null);
+__decorate([
+    (0, common_1.Post)('verify-otp'),
+    __param(0, (0, common_1.Body)('email')),
+    __param(1, (0, common_1.Body)('otp')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyOTP", null);
+__decorate([
+    (0, common_1.Post)('reset-password'),
+    __param(0, (0, common_1.Body)('email')),
+    __param(1, (0, common_1.Body)('otp')),
+    __param(2, (0, common_1.Body)('newPassword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "resetPassword", null);
+__decorate([
+    (0, common_1.Post)('change-password'),
+    __param(0, (0, common_1.Body)('userId')),
+    __param(1, (0, common_1.Body)('oldPassword')),
+    __param(2, (0, common_1.Body)('newPassword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "changePassword", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

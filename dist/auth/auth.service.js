@@ -68,6 +68,53 @@ let AuthService = class AuthService {
             message: 'Login successful'
         };
     }
+    async forgotPassword(email) {
+        const user = await this.usersService.findOneByEmail(email);
+        if (!user) {
+            throw new common_1.UnauthorizedException('No account found with this email');
+        }
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiry = new Date();
+        expiry.setMinutes(expiry.getMinutes() + 10);
+        user.resetPasswordOTP = otp;
+        user.otpExpiry = expiry;
+        await this.usersService.save(user);
+        await this.mailService.sendPasswordResetOTP(email, otp);
+        return { success: true, message: 'OTP sent to your email' };
+    }
+    async resendOTP(email) {
+        return this.forgotPassword(email);
+    }
+    async verifyOTP(email, otp) {
+        const user = await this.usersService.findOneByEmail(email);
+        if (!user || user.resetPasswordOTP !== otp) {
+            throw new common_1.UnauthorizedException('Invalid OTP');
+        }
+        if (!user.otpExpiry || new Date() > user.otpExpiry) {
+            throw new common_1.UnauthorizedException('OTP has expired');
+        }
+        return { success: true, message: 'OTP verified successfully' };
+    }
+    async resetPassword(email, otp, newPass) {
+        const user = await this.usersService.findOneByEmail(email);
+        if (!user || user.resetPasswordOTP !== otp) {
+            throw new common_1.UnauthorizedException('Invalid OTP or Session');
+        }
+        user.password = newPass;
+        user.resetPasswordOTP = null;
+        user.otpExpiry = null;
+        await this.usersService.save(user);
+        return { success: true, message: 'Password reset successful' };
+    }
+    async changePassword(userId, oldPass, newPass) {
+        const user = await this.usersService.findOneById(userId);
+        if (!user || user.password !== oldPass) {
+            throw new common_1.UnauthorizedException('Incorrect old password');
+        }
+        user.password = newPass;
+        await this.usersService.save(user);
+        return { success: true, message: 'Password changed successfully' };
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([

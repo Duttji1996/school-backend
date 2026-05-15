@@ -17,12 +17,23 @@ export class UsersService {
   async findOneByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({ 
       where: { email },
-      select: ['id', 'email', 'password', 'role', 'isActive'] // Explicitly select password for auth
+      select: ['id', 'email', 'password', 'role', 'isActive', 'resetPasswordOTP', 'otpExpiry'] 
+    });
+  }
+
+  async findOneById(id: string): Promise<User | null> {
+    return this.usersRepository.findOne({ 
+      where: { id },
+      select: ['id', 'email', 'password', 'role', 'isActive']
     });
   }
 
   async create(userData: Partial<User>): Promise<User> {
     const user = this.usersRepository.create(userData);
+    return this.usersRepository.save(user);
+  }
+
+  async save(user: User): Promise<User> {
     return this.usersRepository.save(user);
   }
 }

@@ -68,4 +68,67 @@ export class AuthService {
       message: 'Login successful'
     };
   }
+
+  async forgotPassword(email: string) {
+    const user = await this.usersService.findOneByEmail(email);
+    if (!user) {
+      // Don't reveal user existence for security, but following simpler pattern
+      throw new UnauthorizedException('No account found with this email');
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiry = new Date();
+    expiry.setMinutes(expiry.getMinutes() + 10);
+
+    user.resetPasswordOTP = otp;
+    user.otpExpiry = expiry;
+    await this.usersService.save(user);
+
+    await this.mailService.sendPasswordResetOTP(email, otp);
+
+    return { success: true, message: 'OTP sent to your email' };
+  }
+
+  async resendOTP(email: string) {
+    return this.forgotPassword(email);
+  }
+
+  async verifyOTP(email: string, otp: string) {
+    const user = await this.usersService.findOneByEmail(email);
+    if (!user || user.resetPasswordOTP !== otp) {
+      throw new UnauthorizedException('Invalid OTP');
+    }
+
+    if (!user.otpExpiry || new Date() > user.otpExpiry) {
+      throw new UnauthorizedException('OTP has expired');
+    }
+
+    return { success: true, message: 'OTP verified successfully' };
+  }
+
+  async resetPassword(email: string, otp: string, newPass: string) {
+    const user = await this.usersService.findOneByEmail(email);
+    if (!user || user.resetPasswordOTP !== otp) {
+      throw new UnauthorizedException('Invalid OTP or Session');
+    }
+
+    user.password = newPass;
+    user.resetPasswordOTP = null;
+    user.otpExpiry = null;
+    await this.usersService.save(user);
+
+    return { success: true, message: 'Password reset successful' };
+  }
+
+  async changePassword(userId: string, oldPass: string, newPass: string) {
+    const user = await this.usersService.findOneById(userId);
+    if (!user || user.password !== oldPass) {
+      throw new UnauthorizedException('Incorrect old password');
+    }
+
+    user.password = newPass;
+    await this.usersService.save(user);
+
+    return { success: true, message: 'Password changed successfully' };
+  }
 }

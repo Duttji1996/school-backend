@@ -9,6 +9,8 @@ export declare class User {
     password: string;
     role: UserRole;
     isActive: boolean;
+    resetPasswordOTP: string | null;
+    otpExpiry: Date | null;
     createdAt: Date;
     updatedAt: Date;
 }

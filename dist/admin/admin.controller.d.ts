@@ -15,7 +15,7 @@ export declare class AdminController {
             email: string;
             className: string;
             section: string;
-            status: "active" | "pending" | "rejected";
+            status: "pending" | "active" | "rejected";
             admissionDate: string;
             rollNo: string;
             attendance: number;

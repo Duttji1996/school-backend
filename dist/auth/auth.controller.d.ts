@@ -14,4 +14,24 @@ export declare class AuthController {
         success: boolean;
         message: string;
     }>;
+    forgotPassword(email: string): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    resendOTP(email: string): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    verifyOTP(email: string, otp: string): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    resetPassword(email: string, otp: string, newPass: string): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    changePassword(userId: string, oldPass: string, newPass: string): Promise<{
+        success: boolean;
+        message: string;
+    }>;
 }

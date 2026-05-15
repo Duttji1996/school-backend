@@ -7,6 +7,7 @@ export declare class MailService {
     sendContactFormNotification(details: {
         name: string;
         email: string;
+        phone?: string;
         subject: string;
         message: string;
     }): Promise<void>;
@@ -15,4 +16,5 @@ export declare class MailService {
     sendHomeworkNotification(email: string, studentName: string, subject: string, title: string): Promise<void>;
     sendSalaryCreditNotification(email: string, teacherName: string, amount: number): Promise<void>;
     sendCredentials(email: string, name: string, password: string, role: string): Promise<void>;
+    sendPasswordResetOTP(email: string, otp: string): Promise<void>;
 }

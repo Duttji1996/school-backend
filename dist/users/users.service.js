@@ -28,11 +28,20 @@ let UsersService = class UsersService {
     async findOneByEmail(email) {
         return this.usersRepository.findOne({
             where: { email },
+            select: ['id', 'email', 'password', 'role', 'isActive', 'resetPasswordOTP', 'otpExpiry']
+        });
+    }
+    async findOneById(id) {
+        return this.usersRepository.findOne({
+            where: { id },
             select: ['id', 'email', 'password', 'role', 'isActive']
         });
     }
     async create(userData) {
         const user = this.usersRepository.create(userData);
+        return this.usersRepository.save(user);
+    }
+    async save(user) {
         return this.usersRepository.save(user);
     }
 };

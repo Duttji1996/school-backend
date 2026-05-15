@@ -29,6 +29,7 @@ let MailService = class MailService {
         <h3>New Message from Contact Form</h3>
         <p><b>Name:</b> ${details.name}</p>
         <p><b>Email:</b> ${details.email}</p>
+        <p><b>Phone:</b> ${details.phone || 'N/A'}</p>
         <p><b>Subject:</b> ${details.subject}</p>
         <p><b>Message:</b></p>
         <p>${details.message}</p>
@@ -131,6 +132,21 @@ let MailService = class MailService {
         <p>Please change your password after your first login.</p>
         <br>
         <p>Regards,<br>UDCS Administration</p>
+      `,
+        });
+    }
+    async sendPasswordResetOTP(email, otp) {
+        await this.mailerService.sendMail({
+            to: email,
+            subject: 'Password Reset OTP - UDCS Portal',
+            html: `
+        <h3>Password Reset Request</h3>
+        <p>You have requested to reset your password for the UDCS Portal.</p>
+        <p>Your One-Time Password (OTP) is:</p>
+        <h2 style="letter-spacing: 5px; color: #1e3a8a;">${otp}</h2>
+        <p>This OTP is valid for 10 minutes. If you did not request this, please ignore this email.</p>
+        <br>
+        <p>Regards,<br>UDCS IT Team</p>
       `,
         });
     }
