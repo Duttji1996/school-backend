@@ -138,15 +138,34 @@ let MailService = class MailService {
     async sendPasswordResetOTP(email, otp) {
         await this.mailerService.sendMail({
             to: email,
-            subject: 'Password Reset OTP - UDCS Portal',
+            subject: '🔐 Security Alert: Password Reset OTP - UDCS Portal',
             html: `
-        <h3>Password Reset Request</h3>
-        <p>You have requested to reset your password for the UDCS Portal.</p>
-        <p>Your One-Time Password (OTP) is:</p>
-        <h2 style="letter-spacing: 5px; color: #1e3a8a;">${otp}</h2>
-        <p>This OTP is valid for 10 minutes. If you did not request this, please ignore this email.</p>
-        <br>
-        <p>Regards,<br>UDCS IT Team</p>
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+          <div style="background-color: #1e3a8a; padding: 30px; text-align: center;">
+            <h1 style="color: #facc15; margin: 0; font-size: 24px; letter-spacing: 2px;">USHA DEVI CONVENT SCHOOL</h1>
+            <p style="color: #ffffff; margin: 5px 0 0; font-size: 14px; opacity: 0.8;">OFFICIAL PORTAL SECURITY</p>
+          </div>
+          <div style="padding: 40px 30px; background-color: #ffffff;">
+            <h2 style="color: #1e293b; margin-top: 0;">Password Reset Request</h2>
+            <p style="color: #475569; line-height: 1.6; font-size: 16px;">
+              We received a request to reset your password for the UDCS Unified Dashboard. 
+              Please use the following One-Time Password (OTP) to proceed with your security update:
+            </p>
+            <div style="background-color: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 20px; text-align: center; margin: 30px 0;">
+              <span style="font-size: 32px; font-weight: 800; color: #1e3a8a; letter-spacing: 8px;">${otp}</span>
+            </div>
+            <p style="color: #64748b; font-size: 14px; line-height: 1.6;">
+              This code is sensitive and will expire in <b>10 minutes</b>. 
+              If you did not initiate this request, please contact the UDCS IT Administration immediately.
+            </p>
+          </div>
+          <div style="background-color: #f1f5f9; padding: 20px; text-align: center;">
+            <p style="color: #94a3b8; font-size: 12px; margin: 0;">
+              &copy; ${new Date().getFullYear()} Usha Devi Convent School. All rights reserved.<br>
+              This is an automated security notification. Please do not reply.
+            </p>
+          </div>
+        </div>
       `,
         });
     }
