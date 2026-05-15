@@ -9,6 +9,8 @@ import { SchoolClass } from '../curriculum/entities/school-class.entity';
 import { User, UserRole } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { MailService } from '../mail/mail.service';
+import { Contact } from '../contact/entities/contact.entity';
+import { Circular } from '../communications/entities/circular.entity';
 
 @Injectable()
 export class AdminService {
@@ -21,6 +23,10 @@ export class AdminService {
     private feePaymentRepository: Repository<FeePayment>,
     @InjectRepository(SchoolClass)
     private classRepository: Repository<SchoolClass>,
+    @InjectRepository(Contact)
+    private contactRepository: Repository<Contact>,
+    @InjectRepository(Circular)
+    private circularRepository: Repository<Circular>,
     private usersService: UsersService,
     private mailService: MailService,
   ) {}
@@ -171,6 +177,23 @@ export class AdminService {
     return savedTeacher;
   }
 
+  async updateTeacher(id: string, teacherData: any) {
+    const teacher = await this.teacherRepository.findOne({ 
+      where: { id },
+      relations: ['user'] 
+    });
+    if (!teacher) throw new NotFoundException('Staff not found');
+
+    if (teacherData.name) teacher.fullName = teacherData.name;
+    if (teacherData.subject) teacher.subject = teacherData.subject;
+    if (teacherData.salary) teacher.salary = teacherData.salary;
+    if (teacherData.joiningDate) teacher.joiningDate = teacherData.joiningDate;
+    if (teacherData.address) teacher.address = teacherData.address;
+    if (teacherData.contactNo) teacher.contactNo = teacherData.contactNo;
+
+    return this.teacherRepository.save(teacher);
+  }
+
   async getDashboardStats() {
     const totalStudents = await this.studentRepository.count();
     const totalTeachers = await this.teacherRepository.count();
@@ -197,7 +220,15 @@ export class AdminService {
       admissionDate: s.admissionDate || new Date().toISOString().split('T')[0],
       rollNo: s.rollNumber,
       attendance: 92, 
-      feeStatus: s.status === 'active' ? 'Paid' : 'Pending'
+      feeStatus: s.status === 'active' ? 'Paid' : 'Pending',
+      fatherName: s.fatherName,
+      motherName: s.motherName,
+      aadharId: s.aadharId,
+      dob: s.dob,
+      gender: s.gender,
+      bloodGroup: s.bloodGroup,
+      address: s.address,
+      contactNo: s.contactNo
     }));
     
     const teachers = (await this.teacherRepository.find({ relations: ['user'] })).map(t => ({
@@ -221,5 +252,24 @@ export class AdminService {
         { className: 'Class 5', monthlyFee: 3500, annualFee: 42000 }
       ]
     };
+  }
+
+  // Communications
+  async getCirculars() {
+    return this.circularRepository.find({ order: { createdAt: 'DESC' } });
+  }
+
+  async createCircular(data: any) {
+    const circular = this.circularRepository.create(data);
+    return this.circularRepository.save(circular);
+  }
+
+  async deleteCircular(id: string) {
+    return this.circularRepository.delete(id);
+  }
+
+  // Contact Inquiries
+  async getContactInquiries() {
+    return this.contactRepository.find({ order: { createdAt: 'DESC' } });
   }
 }

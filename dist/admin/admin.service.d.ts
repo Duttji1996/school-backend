@@ -6,18 +6,23 @@ import { SchoolClass } from '../curriculum/entities/school-class.entity';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { MailService } from '../mail/mail.service';
+import { Contact } from '../contact/entities/contact.entity';
+import { Circular } from '../communications/entities/circular.entity';
 export declare class AdminService {
     private studentRepository;
     private teacherRepository;
     private feePaymentRepository;
     private classRepository;
+    private contactRepository;
+    private circularRepository;
     private usersService;
     private mailService;
-    constructor(studentRepository: Repository<Student>, teacherRepository: Repository<Teacher>, feePaymentRepository: Repository<FeePayment>, classRepository: Repository<SchoolClass>, usersService: UsersService, mailService: MailService);
+    constructor(studentRepository: Repository<Student>, teacherRepository: Repository<Teacher>, feePaymentRepository: Repository<FeePayment>, classRepository: Repository<SchoolClass>, contactRepository: Repository<Contact>, circularRepository: Repository<Circular>, usersService: UsersService, mailService: MailService);
     registerStudent(studentData: any): Promise<Student>;
     updateStudent(id: string, studentData: any): Promise<Student>;
     approveStudent(id: string): Promise<Student>;
     registerTeacher(teacherData: any): Promise<Teacher>;
+    updateTeacher(id: string, teacherData: any): Promise<Teacher>;
     getDashboardStats(): Promise<{
         totalStudents: number;
         totalTeachers: number;
@@ -36,6 +41,14 @@ export declare class AdminService {
             rollNo: string;
             attendance: number;
             feeStatus: string;
+            fatherName: string;
+            motherName: string;
+            aadharId: string;
+            dob: string;
+            gender: string;
+            bloodGroup: string;
+            address: string;
+            contactNo: string;
         }[];
         teachers: {
             name: string;
@@ -47,6 +60,8 @@ export declare class AdminService {
             joiningDate: string;
             lastSalaryCredited: string;
             attendancePercentage: number;
+            address: string;
+            contactNo: string;
             user: User;
         }[];
         feeStructures: {
@@ -55,4 +70,8 @@ export declare class AdminService {
             annualFee: number;
         }[];
     }>;
+    getCirculars(): Promise<Circular[]>;
+    createCircular(data: any): Promise<Circular[]>;
+    deleteCircular(id: string): Promise<import("typeorm").DeleteResult>;
+    getContactInquiries(): Promise<Contact[]>;
 }

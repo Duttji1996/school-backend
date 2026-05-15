@@ -7,5 +7,7 @@ export declare class Teacher {
     joiningDate: string;
     lastSalaryCredited: string;
     attendancePercentage: number;
+    address: string;
+    contactNo: string;
     user: User;
 }

@@ -16,6 +16,10 @@ exports.ContactController = void 0;
 const common_1 = require("@nestjs/common");
 const contact_service_1 = require("./contact.service");
 const create_contact_dto_1 = require("./dto/create-contact.dto");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const roles_guard_1 = require("../auth/guards/roles.guard");
+const roles_decorator_1 = require("../auth/decorators/roles.decorator");
+const user_entity_1 = require("../users/entities/user.entity");
 let ContactController = class ContactController {
     contactService;
     constructor(contactService) {
@@ -23,6 +27,9 @@ let ContactController = class ContactController {
     }
     async submit(createContactDto) {
         return this.contactService.processContactForm(createContactDto);
+    }
+    async findAll() {
+        return this.contactService.findAll();
     }
 };
 exports.ContactController = ContactController;
@@ -33,6 +40,14 @@ __decorate([
     __metadata("design:paramtypes", [create_contact_dto_1.CreateContactDto]),
     __metadata("design:returntype", Promise)
 ], ContactController.prototype, "submit", null);
+__decorate([
+    (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(user_entity_1.UserRole.ADMIN),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ContactController.prototype, "findAll", null);
 exports.ContactController = ContactController = __decorate([
     (0, common_1.Controller)('contact'),
     __metadata("design:paramtypes", [contact_service_1.ContactService])

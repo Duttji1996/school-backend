@@ -10,4 +10,5 @@ export declare class ContactService {
         success: boolean;
         message: string;
     }>;
+    findAll(): Promise<Contact[]>;
 }

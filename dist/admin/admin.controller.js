@@ -42,8 +42,23 @@ let AdminController = class AdminController {
     updateStudent(id, studentData) {
         return this.adminService.updateStudent(id, studentData);
     }
+    updateTeacher(id, teacherData) {
+        return this.adminService.updateTeacher(id, teacherData);
+    }
     approveStudent(id) {
         return this.adminService.approveStudent(id);
+    }
+    getCirculars() {
+        return this.adminService.getCirculars();
+    }
+    createCircular(data) {
+        return this.adminService.createCircular(data);
+    }
+    deleteCircular(id) {
+        return this.adminService.deleteCircular(id);
+    }
+    getContacts() {
+        return this.adminService.getContactInquiries();
     }
 };
 exports.AdminController = AdminController;
@@ -76,12 +91,46 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "updateStudent", null);
 __decorate([
+    (0, common_1.Put)('teachers/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "updateTeacher", null);
+__decorate([
     (0, common_1.Post)('students/approve/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "approveStudent", null);
+__decorate([
+    (0, common_1.Get)('circulars'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "getCirculars", null);
+__decorate([
+    (0, common_1.Post)('circulars'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "createCircular", null);
+__decorate([
+    (0, common_1.Delete)('circulars/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "deleteCircular", null);
+__decorate([
+    (0, common_1.Get)('contacts'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "getContacts", null);
 exports.AdminController = AdminController = __decorate([
     (0, common_1.Controller)('admin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -36,8 +36,35 @@ export class AdminController {
     return this.adminService.updateStudent(id, studentData);
   }
 
+  @Put('teachers/:id')
+  updateTeacher(@Param('id') id: string, @Body() teacherData: any) {
+    return this.adminService.updateTeacher(id, teacherData);
+  }
+
   @Post('students/approve/:id')
   approveStudent(@Param('id') id: string) {
     return this.adminService.approveStudent(id);
+  }
+
+  // Communications
+  @Get('circulars')
+  getCirculars() {
+    return this.adminService.getCirculars();
+  }
+
+  @Post('circulars')
+  createCircular(@Body() data: any) {
+    return this.adminService.createCircular(data);
+  }
+
+  @Delete('circulars/:id')
+  deleteCircular(@Param('id') id: string) {
+    return this.adminService.deleteCircular(id);
+  }
+
+  // Contact Inquiries
+  @Get('contacts')
+  getContacts() {
+    return this.adminService.getContactInquiries();
   }
 }

@@ -9,7 +9,7 @@ export declare class StudentsService {
         studentName: string;
         studentId: string;
         rollNumber: string;
-        status: "active" | "pending" | "rejected";
+        status: "pending" | "active" | "rejected";
         className: string;
         section: string;
         profileImage: string;

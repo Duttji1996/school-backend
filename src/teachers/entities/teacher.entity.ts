@@ -24,6 +24,12 @@ export class Teacher {
   @Column({ default: 100 })
   attendancePercentage: number;
 
+  @Column({ nullable: true })
+  address: string;
+
+  @Column({ nullable: true })
+  contactNo: string;
+
   @OneToOne(() => User, { cascade: true })
   @JoinColumn()
   user: User;

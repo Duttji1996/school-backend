@@ -8,10 +8,12 @@ import { FeePayment } from '../finance/entities/fee-payment.entity';
 import { SchoolClass } from '../curriculum/entities/school-class.entity';
 import { UsersModule } from '../users/users.module';
 import { MailModule } from '../mail/mail.module';
+import { Contact } from '../contact/entities/contact.entity';
+import { Circular } from '../communications/entities/circular.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Student, Teacher, FeePayment, SchoolClass]),
+    TypeOrmModule.forFeature([Student, Teacher, FeePayment, SchoolClass, Contact, Circular]),
     UsersModule,
     MailModule,
   ],

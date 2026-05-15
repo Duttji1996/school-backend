@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 class CreateContactDto {
     name;
     email;
+    phone;
     subject;
     message;
 }
@@ -29,6 +30,12 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateContactDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(15),
+    __metadata("design:type", String)
+], CreateContactDto.prototype, "phone", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

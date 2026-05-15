@@ -15,6 +15,7 @@ import { FinanceModule } from './finance/finance.module';
 import { ExamsModule } from './exams/exams.module';
 import { CurriculumModule } from './curriculum/curriculum.module';
 import { ContactModule } from './contact/contact.module';
+import { CommunicationsModule } from './communications/communications.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { ContactModule } from './contact/contact.module';
     ExamsModule,
     CurriculumModule,
     ContactModule,
+    CommunicationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

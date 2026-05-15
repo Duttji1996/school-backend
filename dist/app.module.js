@@ -24,6 +24,7 @@ const finance_module_1 = require("./finance/finance.module");
 const exams_module_1 = require("./exams/exams.module");
 const curriculum_module_1 = require("./curriculum/curriculum.module");
 const contact_module_1 = require("./contact/contact.module");
+const communications_module_1 = require("./communications/communications.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -60,6 +61,7 @@ exports.AppModule = AppModule = __decorate([
             exams_module_1.ExamsModule,
             curriculum_module_1.CurriculumModule,
             contact_module_1.ContactModule,
+            communications_module_1.CommunicationsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

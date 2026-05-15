@@ -20,6 +20,8 @@ let Teacher = class Teacher {
     joiningDate;
     lastSalaryCredited;
     attendancePercentage;
+    address;
+    contactNo;
     user;
 };
 exports.Teacher = Teacher;
@@ -51,6 +53,14 @@ __decorate([
     (0, typeorm_1.Column)({ default: 100 }),
     __metadata("design:type", Number)
 ], Teacher.prototype, "attendancePercentage", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Teacher.prototype, "address", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Teacher.prototype, "contactNo", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => user_entity_1.User, { cascade: true }),
     (0, typeorm_1.JoinColumn)(),

@@ -9,47 +9,42 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Contact = void 0;
+exports.Circular = void 0;
 const typeorm_1 = require("typeorm");
-let Contact = class Contact {
+let Circular = class Circular {
     id;
-    name;
-    email;
-    phone;
-    subject;
-    message;
+    title;
+    content;
+    targetAudience;
+    category;
     createdAt;
 };
-exports.Contact = Contact;
+exports.Circular = Circular;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], Contact.prototype, "id", void 0);
+], Circular.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Contact.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Contact.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], Contact.prototype, "phone", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Contact.prototype, "subject", void 0);
+], Circular.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)
-], Contact.prototype, "message", void 0);
+], Circular.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 'All' }),
+    __metadata("design:type", String)
+], Circular.prototype, "targetAudience", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Circular.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], Contact.prototype, "createdAt", void 0);
-exports.Contact = Contact = __decorate([
-    (0, typeorm_1.Entity)('contact_messages')
-], Contact);
-//# sourceMappingURL=contact.entity.js.map
+], Circular.prototype, "createdAt", void 0);
+exports.Circular = Circular = __decorate([
+    (0, typeorm_1.Entity)('circulars')
+], Circular);
+//# sourceMappingURL=circular.entity.js.map

@@ -17,13 +17,15 @@ const fee_payment_entity_1 = require("../finance/entities/fee-payment.entity");
 const school_class_entity_1 = require("../curriculum/entities/school-class.entity");
 const users_module_1 = require("../users/users.module");
 const mail_module_1 = require("../mail/mail.module");
+const contact_entity_1 = require("../contact/entities/contact.entity");
+const circular_entity_1 = require("../communications/entities/circular.entity");
 let AdminModule = class AdminModule {
 };
 exports.AdminModule = AdminModule;
 exports.AdminModule = AdminModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([student_entity_1.Student, teacher_entity_1.Teacher, fee_payment_entity_1.FeePayment, school_class_entity_1.SchoolClass]),
+            typeorm_1.TypeOrmModule.forFeature([student_entity_1.Student, teacher_entity_1.Teacher, fee_payment_entity_1.FeePayment, school_class_entity_1.SchoolClass, contact_entity_1.Contact, circular_entity_1.Circular]),
             users_module_1.UsersModule,
             mail_module_1.MailModule,
         ],

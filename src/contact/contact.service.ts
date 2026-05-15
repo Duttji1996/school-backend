@@ -26,4 +26,10 @@ export class ContactService {
       message: 'Your message has been sent successfully. We will get back to you soon.',
     };
   }
+
+  async findAll() {
+    return this.contactRepository.find({
+      order: { createdAt: 'DESC' } as any
+    });
+  }
 }

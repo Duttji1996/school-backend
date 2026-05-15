@@ -7,4 +7,5 @@ export declare class ContactController {
         success: boolean;
         message: string;
     }>;
+    findAll(): Promise<import("./entities/contact.entity").Contact[]>;
 }

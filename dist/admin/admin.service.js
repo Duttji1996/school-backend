@@ -23,18 +23,24 @@ const school_class_entity_1 = require("../curriculum/entities/school-class.entit
 const user_entity_1 = require("../users/entities/user.entity");
 const users_service_1 = require("../users/users.service");
 const mail_service_1 = require("../mail/mail.service");
+const contact_entity_1 = require("../contact/entities/contact.entity");
+const circular_entity_1 = require("../communications/entities/circular.entity");
 let AdminService = class AdminService {
     studentRepository;
     teacherRepository;
     feePaymentRepository;
     classRepository;
+    contactRepository;
+    circularRepository;
     usersService;
     mailService;
-    constructor(studentRepository, teacherRepository, feePaymentRepository, classRepository, usersService, mailService) {
+    constructor(studentRepository, teacherRepository, feePaymentRepository, classRepository, contactRepository, circularRepository, usersService, mailService) {
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
         this.feePaymentRepository = feePaymentRepository;
         this.classRepository = classRepository;
+        this.contactRepository = contactRepository;
+        this.circularRepository = circularRepository;
         this.usersService = usersService;
         this.mailService = mailService;
     }
@@ -167,6 +173,27 @@ let AdminService = class AdminService {
         void this.mailService.sendCredentials(teacherData.email, teacherData.name, tempPassword, 'Teacher');
         return savedTeacher;
     }
+    async updateTeacher(id, teacherData) {
+        const teacher = await this.teacherRepository.findOne({
+            where: { id },
+            relations: ['user']
+        });
+        if (!teacher)
+            throw new common_1.NotFoundException('Staff not found');
+        if (teacherData.name)
+            teacher.fullName = teacherData.name;
+        if (teacherData.subject)
+            teacher.subject = teacherData.subject;
+        if (teacherData.salary)
+            teacher.salary = teacherData.salary;
+        if (teacherData.joiningDate)
+            teacher.joiningDate = teacherData.joiningDate;
+        if (teacherData.address)
+            teacher.address = teacherData.address;
+        if (teacherData.contactNo)
+            teacher.contactNo = teacherData.contactNo;
+        return this.teacherRepository.save(teacher);
+    }
     async getDashboardStats() {
         const totalStudents = await this.studentRepository.count();
         const totalTeachers = await this.teacherRepository.count();
@@ -189,7 +216,15 @@ let AdminService = class AdminService {
             admissionDate: s.admissionDate || new Date().toISOString().split('T')[0],
             rollNo: s.rollNumber,
             attendance: 92,
-            feeStatus: s.status === 'active' ? 'Paid' : 'Pending'
+            feeStatus: s.status === 'active' ? 'Paid' : 'Pending',
+            fatherName: s.fatherName,
+            motherName: s.motherName,
+            aadharId: s.aadharId,
+            dob: s.dob,
+            gender: s.gender,
+            bloodGroup: s.bloodGroup,
+            address: s.address,
+            contactNo: s.contactNo
         }));
         const teachers = (await this.teacherRepository.find({ relations: ['user'] })).map(t => ({
             ...t,
@@ -212,6 +247,19 @@ let AdminService = class AdminService {
             ]
         };
     }
+    async getCirculars() {
+        return this.circularRepository.find({ order: { createdAt: 'DESC' } });
+    }
+    async createCircular(data) {
+        const circular = this.circularRepository.create(data);
+        return this.circularRepository.save(circular);
+    }
+    async deleteCircular(id) {
+        return this.circularRepository.delete(id);
+    }
+    async getContactInquiries() {
+        return this.contactRepository.find({ order: { createdAt: 'DESC' } });
+    }
 };
 exports.AdminService = AdminService;
 exports.AdminService = AdminService = __decorate([
@@ -220,7 +268,11 @@ exports.AdminService = AdminService = __decorate([
     __param(1, (0, typeorm_1.InjectRepository)(teacher_entity_1.Teacher)),
     __param(2, (0, typeorm_1.InjectRepository)(fee_payment_entity_1.FeePayment)),
     __param(3, (0, typeorm_1.InjectRepository)(school_class_entity_1.SchoolClass)),
+    __param(4, (0, typeorm_1.InjectRepository)(contact_entity_1.Contact)),
+    __param(5, (0, typeorm_1.InjectRepository)(circular_entity_1.Circular)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
