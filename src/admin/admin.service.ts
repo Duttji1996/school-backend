@@ -92,7 +92,7 @@ export class AdminService {
       return savedStudent;
     } catch (error) {
       if (error instanceof ConflictException) throw error;
-      throw new Error('Internal registration error: ' + error.message);
+      throw new Error('Internal registration error: ' + error);
     }
   }
 
