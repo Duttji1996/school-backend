@@ -79,7 +79,7 @@ let AuthService = class AuthService {
         user.resetPasswordOTP = otp;
         user.otpExpiry = expiry;
         await this.usersService.save(user);
-        await this.mailService.sendPasswordResetOTP(email, otp);
+        void this.mailService.sendPasswordResetOTP(email, otp);
         return { success: true, message: 'OTP sent to your email' };
     }
     async resendOTP(email) {

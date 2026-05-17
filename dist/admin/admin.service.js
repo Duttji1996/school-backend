@@ -94,7 +94,7 @@ let AdminService = class AdminService {
         catch (error) {
             if (error instanceof common_1.ConflictException)
                 throw error;
-            throw new Error('Internal registration error: ' + error.message);
+            throw new Error('Internal registration error: ' + error);
         }
     }
     async updateStudent(id, studentData) {
